@@ -2,7 +2,7 @@ import { Link, LinkProps, useLocation } from 'react-router-dom'
 
 type NavLinkProps = LinkProps
 
-export function NavLink(props: NavLinkProps) {
+export function NavLink(props: Readonly<NavLinkProps>) {
   const { pathname } = useLocation()
 
   return (

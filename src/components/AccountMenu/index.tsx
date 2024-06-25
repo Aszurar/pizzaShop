@@ -13,7 +13,7 @@ import {
 export function AccountMenu() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
           className="flex select-none items-center gap-2"
@@ -23,7 +23,7 @@ export function AccountMenu() {
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel className="flex flex-col">
           <span>Lucas de Lima</span>
           <span className="text-xs font-normal text-muted-foreground">
