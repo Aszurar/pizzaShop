@@ -22,7 +22,7 @@ export function OrdersTableFilters() {
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Todos status</SelectItem>
+          <SelectItem value="all">Todos</SelectItem>
           <SelectItem value="pending">Pendente</SelectItem>
           <SelectItem value="canceled">Cancelado</SelectItem>
           <SelectItem value="processing">Em preparo</SelectItem>
