@@ -7,17 +7,17 @@ import {
 
 import { Button } from '@/components/ui/button'
 
-interface OrdersTablePaginationProps {
+interface PaginationProps {
   pageIndex: number
   totalCount: number
   perPage: number
 }
 
-export function OrdersTablePagination({
+export function Pagination({
   pageIndex,
   perPage,
   totalCount,
-}: OrdersTablePaginationProps) {
+}: Readonly<PaginationProps>) {
   const pages = Math.ceil(totalCount / perPage) || 1
 
   return (
