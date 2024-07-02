@@ -14,7 +14,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-export default function OrdersTableDetail() {
+export function OrdersTableDetail() {
   return (
     <DialogContent>
       <DialogHeader>

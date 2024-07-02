@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 
-import OrdersTableDetail from '../OrdersTableDetail'
+import { OrdersTableDetail } from '../OrdersTableDetail'
 
 export function OrdersTableRow() {
   return (
