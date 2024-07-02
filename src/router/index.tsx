@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom'
 
 import { AppLayout } from '@/pages/_layout/app'
 import { AuthLayout } from '@/pages/_layout/auth'
+import { NotFound } from '@/pages/404'
 import { Dashboard } from '@/pages/app/Dashboard'
 import { Orders } from '@/pages/app/Orders'
 import { SignIn } from '@/pages/auth/SignIn'
@@ -12,19 +13,20 @@ import { ROUTES } from './routes'
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <AuthLayout />,
+    element: <AppLayout />,
+    errorElement: <NotFound />,
     children: [
-      { path: ROUTES.SIGN_IN, element: <SignIn /> },
-      { path: ROUTES.SIGN_UP, element: <SignUp /> },
+      { path: '/', element: <Dashboard /> },
+      { path: ROUTES.ORDERS, element: <Orders /> },
     ],
   },
 
   {
     path: '/',
-    element: <AppLayout />,
+    element: <AuthLayout />,
     children: [
-      { path: '/', element: <Dashboard /> },
-      { path: '/orders', element: <Orders /> },
+      { path: ROUTES.SIGN_IN, element: <SignIn /> },
+      { path: ROUTES.SIGN_UP, element: <SignUp /> },
     ],
   },
 ])
