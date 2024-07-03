@@ -1,9 +1,11 @@
+import { useMutation } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { registerRestaurant } from '@/api/register-restaurant'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -27,16 +29,24 @@ export function SignUp() {
     formState: { isSubmitting },
   } = useForm<SignUpFormProps>()
 
+  const { mutateAsync: registerRestaurantFn, isPending } = useMutation({
+    mutationFn: registerRestaurant,
+  })
+
+  const isLoading = isPending || isSubmitting
+
   async function handleSignUp(data: SignUpFormProps) {
-    console.log(data)
-
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-
+      registerRestaurantFn({
+        email: data.email,
+        phone: data.phone,
+        managerName: data.managerName,
+        restaurantName: data.restaurantName,
+      })
       toast.success('Restaurante cadastrado com sucesso!', {
         action: {
           label: 'Login',
-          onClick: () => navigate(ROUTES.SIGN_IN),
+          onClick: () => navigate(`${ROUTES.SIGN_IN}?email=${data.email}`),
         },
       })
     } catch (error) {
@@ -85,7 +95,7 @@ export function SignUp() {
               <Label>Seu celular</Label>
               <Input id="phone" type="tel" {...register('phone')} />
             </div>
-            <Button type="submit" disabled={isSubmitting} className="w-full">
+            <Button type="submit" disabled={isLoading} className="w-full">
               Finalizar cadastro
             </Button>
             <p className="px-6 text-center text-sm leading-relaxed text-muted-foreground">
