@@ -20,7 +20,6 @@ export const router = createBrowserRouter([
       { path: ROUTES.ORDERS, element: <Orders /> },
     ],
   },
-
   {
     path: '/',
     element: <AuthLayout />,
