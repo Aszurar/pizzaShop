@@ -3,10 +3,15 @@ import { ArrowRight, Search, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
+import { IOrder } from '@/data/orders'
 
 import { OrdersTableDetail } from '../OrdersTableDetail'
 
-export function OrdersTableRow() {
+type OrdersTableRowProps = {
+  order: IOrder
+}
+
+export function OrdersTableRow({ order }: Readonly<OrdersTableRowProps>) {
   return (
     <TableRow>
       <TableCell>
@@ -22,21 +27,25 @@ export function OrdersTableRow() {
       </TableCell>
 
       <TableCell className="font-mono text-xs font-medium">
-        821e78f7asdhdf128h
+        {order.orderId}
       </TableCell>
 
-      <TableCell className="text-muted-foreground">há 15 minutos</TableCell>
+      <TableCell className="text-muted-foreground">
+        {order.createdAt.toString()}
+      </TableCell>
 
       <TableCell>
         <div className="flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-slate-400" />
-          <span className="font-medium text-muted-foreground">Pendente</span>
+          <span className="font-medium text-muted-foreground">
+            {order.status}
+          </span>
         </div>
       </TableCell>
 
-      <TableCell className="font-medium">Diego Schell Fernandes</TableCell>
+      <TableCell className="font-medium">{order.customerName}</TableCell>
 
-      <TableCell className="font-medium">R$ 149,90</TableCell>
+      <TableCell className="font-medium">{order.total}</TableCell>
 
       <TableCell>
         <Button variant="outline" size="xs">
