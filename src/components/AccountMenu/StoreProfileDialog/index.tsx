@@ -165,13 +165,14 @@ export function StoreProfileDialog({
             Cancelar
           </Button>
         </DialogClose>
-        {isUpdateProfileLoading ? (
-          <Skeleton className="h-10 w-24 self-center bg-emerald-500 dark:bg-emerald-600" />
-        ) : (
-          <Button type="submit" variant="success" form="storeProfileForm">
-            Salvar
-          </Button>
-        )}
+        <Button
+          type="submit"
+          variant="success"
+          form="storeProfileForm"
+          isLoading={isUpdateProfileLoading}
+        >
+          Salvar
+        </Button>
       </DialogFooter>
     </DialogContent>
   )
