@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
 import { getOrders } from '@/api/get-orders'
@@ -14,20 +15,21 @@ import { OrdersTableFilters } from './OrdersTableFilters'
 import { OrdersTableHeader } from './OrdersTableHeader'
 
 export function Orders() {
-  const {
-    pageIndex,
-    perPage,
-    // setItemsPerPage,
-    setPagination,
-  } = usePagination()
+  const [searchParams] = useSearchParams()
+  const { pageIndex, perPage, setPagination } = usePagination()
+
+  const id = searchParams.get('id')
+  const customerName = searchParams.get('customerName')
+  const status = searchParams.get('status')
+
   const {
     data: results,
     isPending: isGettingOrders,
     error,
     isError,
   } = useQuery({
-    queryKey: ['orders', pageIndex],
-    queryFn: () => getOrders({ pageIndex }),
+    queryKey: ['orders', pageIndex, id, customerName, status],
+    queryFn: () => getOrders({ pageIndex, id, customerName, status }),
   })
 
   useEffect(() => {
@@ -53,7 +55,7 @@ export function Orders() {
         <h1 className="text-3xl font-bold tracking-tight">Pedidos</h1>
 
         <div className="space-y-2.5">
-          <OrdersTableFilters />
+          <OrdersTableFilters isPending={isGettingOrders} />
 
           <div className="rounded-md border">
             <Table>

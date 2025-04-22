@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
@@ -6,6 +7,7 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { signIn } from '@/api/sign-in'
+import { ErrorMessage } from '@/components/ErrorMessage'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -25,11 +27,12 @@ export function SignIn() {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm<SignInFormProps>({
     defaultValues: {
       email: emailAfterRegister,
     },
+    resolver: zodResolver(signInForm),
   })
 
   const { mutateAsync: authenticate, isPending } = useMutation({
@@ -73,8 +76,9 @@ export function SignIn() {
             <div className="space-y-2">
               <Label>Seu e-mail</Label>
               <Input id="email" type="email" {...register('email')} />
+              <ErrorMessage>{errors?.email?.message}</ErrorMessage>
             </div>
-            <Button type="submit" disabled={isLoading} className="w-full">
+            <Button type="submit" isLoading={isLoading} className="w-full">
               Acessar painel
             </Button>
           </form>

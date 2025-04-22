@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
@@ -6,6 +7,7 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { registerRestaurant } from '@/api/register-restaurant'
+import { ErrorMessage } from '@/components/ErrorMessage'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -26,8 +28,10 @@ export function SignUp() {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<SignUpFormProps>()
+    formState: { isSubmitting, errors },
+  } = useForm<SignUpFormProps>({
+    resolver: zodResolver(SignUpForm),
+  })
 
   const { mutateAsync: registerRestaurantFn, isPending } = useMutation({
     mutationFn: registerRestaurant,
@@ -78,6 +82,7 @@ export function SignUp() {
                 type="text"
                 {...register('restaurantName')}
               />
+              <ErrorMessage>{errors?.restaurantName?.message}</ErrorMessage>
             </div>
             <div className="space-y-2">
               <Label>Seu nome</Label>
@@ -86,16 +91,19 @@ export function SignUp() {
                 type="text"
                 {...register('managerName')}
               />
+              <ErrorMessage>{errors?.managerName?.message}</ErrorMessage>
             </div>
             <div className="space-y-2">
               <Label>Seu e-mail</Label>
               <Input id="email" type="email" {...register('email')} />
+              <ErrorMessage>{errors?.email?.message}</ErrorMessage>
             </div>
             <div className="space-y-2">
               <Label>Seu celular</Label>
               <Input id="phone" type="tel" {...register('phone')} />
+              <ErrorMessage>{errors?.phone?.message}</ErrorMessage>
             </div>
-            <Button type="submit" disabled={isLoading} className="w-full">
+            <Button type="submit" isLoading={isLoading} className="w-full">
               Finalizar cadastro
             </Button>
             <p className="px-6 text-center text-sm leading-relaxed text-muted-foreground">
