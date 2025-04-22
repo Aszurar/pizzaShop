@@ -13,4 +13,25 @@ interface IOrder {
   total: number
 }
 
-export type { IOrder, StatusType }
+type OrderItems = {
+  id: string
+  priceInCents: number
+  quantity: number
+  product: {
+    name: string
+  }
+}
+interface IOrderDetails {
+  id: string
+  createdAt: Date
+  status: StatusType
+  totalInCents: number
+  orderItems: OrderItems[]
+  customer: {
+    name: string
+    phone: string | null
+    email: string
+  }
+}
+
+export type { IOrder, IOrderDetails, StatusType }

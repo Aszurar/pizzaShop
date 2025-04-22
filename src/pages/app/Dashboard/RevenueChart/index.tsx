@@ -15,7 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { currencyFormat } from '@/utils/format'
+import { getCurrencyFormatInCents } from '@/utils/format'
 
 const data = [
   { date: '10/12', revenue: 1200 },
@@ -47,7 +47,7 @@ export function RevenueChart() {
               stroke="#888"
               tickLine={false}
               axisLine={false}
-              tickFormatter={(value: number) => currencyFormat.format(value)}
+              tickFormatter={(value: number) => getCurrencyFormatInCents(value)}
             />
 
             <XAxis dataKey="date" tickLine={false} axisLine={false} dy={16} />
