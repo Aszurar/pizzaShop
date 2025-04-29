@@ -63,6 +63,13 @@ module.exports = {
         41: '10.25rem',
         45: '11.25rem',
       },
+
+      maxHeight: {
+        33.5: '8.375rem',
+      },
+      maxWidth: {
+        83: '20.75rem',
+      },
       keyframes: {
         'accordion-down': {
           from: { height: '0' },
