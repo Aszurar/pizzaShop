@@ -1,8 +1,47 @@
+import { useQuery } from '@tanstack/react-query'
 import { Utensils } from 'lucide-react'
 
+import { getDayOrdersAmount } from '@/api/get-day-orders-amount'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { EMPTY_VALUE } from '@/utils/consts'
+import { getValueFormattedToLocale } from '@/utils/format'
+
+import { CARD_INFO_VARIANTS_LABEL, CardInfo } from '../CardInfo'
+import { CardSkeleton } from '../CardSkeleton'
 
 export function DayOrdersAmountCard() {
+  const {
+    data: dayOrdersAmount,
+    isError,
+    isPending,
+  } = useQuery({
+    queryKey: ['day-orders-amount'],
+    queryFn: getDayOrdersAmount,
+    refetchOnWindowFocus: false,
+  })
+
+  if (isPending) {
+    return <CardSkeleton />
+  }
+
+  const amount =
+    getValueFormattedToLocale(dayOrdersAmount?.amount) ?? EMPTY_VALUE
+  const percentageValue = dayOrdersAmount?.diffFromYesterday ?? EMPTY_VALUE
+  const cardInfo = {
+    variant: CARD_INFO_VARIANTS_LABEL.neutral,
+    value: percentageValue,
+  }
+
+  if (percentageValue !== EMPTY_VALUE) {
+    cardInfo.value = Math.abs(percentageValue)
+
+    if (percentageValue > 0) {
+      cardInfo.variant = CARD_INFO_VARIANTS_LABEL.positive
+    } else if (percentageValue < 0) {
+      cardInfo.variant = CARD_INFO_VARIANTS_LABEL.negative
+    }
+  }
+
   return (
     <Card>
       <CardHeader
@@ -13,13 +52,13 @@ export function DayOrdersAmountCard() {
       </CardHeader>
 
       <CardContent className="space-y-1">
-        <span className="text-2xl font-bold tracking-tight">12</span>
-        <p className="text-xs text-muted-foreground">
-          <span className="font-bold text-rose-500  dark:text-rose-400">
-            -4%
-          </span>{' '}
-          em relação a ontem
-        </p>
+        <span className="text-2xl font-bold tracking-tight">{amount}</span>
+        <CardInfo
+          isError={isError}
+          variant={cardInfo.variant}
+          percentageValue={cardInfo.value}
+          description="em relação a ontem"
+        />
       </CardContent>
     </Card>
   )
