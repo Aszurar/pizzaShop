@@ -1,15 +1,11 @@
-import { useMutation } from '@tanstack/react-query'
-import { Search, X } from 'lucide-react'
+import { Search } from 'lucide-react'
 import { useState } from 'react'
-import { toast } from 'sonner'
 
-import { cancelOrder } from '@/api/cancel-order'
 import { OrderStatus } from '@/components/OrderStatus'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { IOrder } from '@/data/orders'
-import { queryClient } from '@/lib/react-query'
 import { ORDER_STATUS } from '@/utils/enums'
 import {
   getCurrencyFormatInCents,
@@ -18,6 +14,7 @@ import {
 
 import { OrderTableDetails } from '../OrderTableDetails'
 import { ApproveButton } from './ApproveButton'
+import { CancelButton } from './CancelButton'
 import { DeliveredButton } from './DeliveredButton'
 import { DispatchButton } from './DispatchButton'
 
@@ -41,34 +38,6 @@ export function OrdersTableRow({ order }: Readonly<OrdersTableRowProps>) {
   const isShowApproveButton = order.status === ORDER_STATUS.pending
   const isShowDispatchButton = order.status === ORDER_STATUS.processing
   const isDeliveredButton = order.status === ORDER_STATUS.delivering
-
-  const { mutateAsync: cancelOrderFn, isPending } = useMutation({
-    mutationFn: cancelOrder,
-    onSuccess: () => {
-      toast.success('Pedido cancelado com sucesso')
-      queryClient.invalidateQueries({ queryKey: ['orders'] })
-    },
-  })
-
-  async function handleCancelOrder() {
-    try {
-      await cancelOrderFn({ id: order.orderId })
-    } catch (error) {
-      console.error('Ocorreu um erro ao cancelar o pedido', error)
-      toast.error(
-        'Ocorreu um erro ao cancelar o pedido, tente novamente mais tarde',
-        {
-          action: {
-            label: 'Tentar novamente',
-            onClick: () => {
-              toast.dismiss()
-              cancelOrder({ id: order.orderId })
-            },
-          },
-        },
-      )
-    }
-  }
 
   return (
     <TableRow>
@@ -113,17 +82,10 @@ export function OrdersTableRow({ order }: Readonly<OrdersTableRowProps>) {
       </TableCell>
 
       <TableCell>
-        <Button
-          size="xs"
-          type="button"
-          variant="ghost"
-          isLoading={isPending}
-          disabled={cantCancelOrder}
-          onClick={handleCancelOrder}
-        >
-          <X className="mr-2 h-3 w-3" />
-          Cancelar
-        </Button>
+        <CancelButton
+          orderId={order.orderId}
+          cantCancelOrder={cantCancelOrder}
+        />
       </TableCell>
     </TableRow>
   )
